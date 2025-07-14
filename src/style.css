@@ -47,21 +47,17 @@ html, body {
   display: flex;
   gap: 25px;
 }
-.nav-links button {
-  background: none;
-  border: none;
+.nav-links li a {
   color: var(--text);
+  text-decoration: none;
   font-weight: bold;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: inherit;
-  padding: 0;
+  transition: color 0.3s;
 }
-.nav-links button:hover {
+.nav-links li a:hover {
   color: var(--accent);
 }
 
-/* SEARCH SECTION */
+/* SEARCH */
 .search-align {
   max-width: 1200px;
   margin: 20px auto;
@@ -85,18 +81,20 @@ html, body {
   transform: translateY(-50%);
   color: var(--text);
 }
-#searchInput,
-#typeSelect,
-#filterSelect,
-.search-wrapper button {
+#searchInput {
+  padding: 8px 12px 8px 35px;
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--card-bg);
+  border-radius: 5px;
+  min-width: 200px;
+}
+#typeSelect, .search-wrapper button {
   padding: 8px 12px;
   background: var(--card-bg);
   color: var(--text);
   border: 1px solid var(--card-bg);
   border-radius: 5px;
-}
-#searchInput {
-  padding-left: 35px;
 }
 .search-wrapper button {
   background: var(--button-bg);
@@ -108,7 +106,7 @@ html, body {
   background: var(--btn-hover);
 }
 
-/* MAIN & GRID LAYOUT */
+/* MAIN CONTENT */
 main {
   max-width: 1200px;
   margin: auto;
@@ -122,6 +120,8 @@ main section h2 {
   margin-bottom: 15px;
   font-size: 1.5rem;
 }
+
+/* GRID LAYOUT */
 .result-grid {
   display: grid;
   gap: 20px;
@@ -140,7 +140,7 @@ main section h2 {
   .result-grid { grid-template-columns: repeat(5, 1fr); }
 }
 
-/* MOVIE CARD STYLING */
+/* CARD STYLING */
 .movie-card {
   background: var(--card-bg);
   border-radius: 5px;
@@ -177,7 +177,7 @@ main section h2 {
   color: var(--text);
 }
 
-/* MODAL STYLING */
+/* MODAL BASE */
 .modal {
   display: none;
   position: fixed;
@@ -187,8 +187,7 @@ main section h2 {
   align-items: center;
   z-index: 1000;
 }
-.modal.show,
-.modal.slide.in {
+.modal.show {
   display: flex;
 }
 .modal-content {
@@ -213,6 +212,11 @@ main section h2 {
   font-size: 24px;
   cursor: pointer;
 }
+
+/* Slide animation for About & Contact modals */
+.modal.slide {
+  display: flex;
+}
 .modal.slide .modal-content {
   transform: translateX(-100%);
   opacity: 0;
@@ -227,7 +231,7 @@ main section h2 {
   opacity: 0;
 }
 
-/* CONTACT FORM STYLES */
+/* CONTACT FORM */
 .modal-content.contact-form {
   max-width: 500px;
   padding: 30px;
@@ -282,4 +286,14 @@ main section h2 {
 .footer-links a:hover {
   color: var(--accent);
 }
+
+
+
+
+
+
+
+
+
+
 
