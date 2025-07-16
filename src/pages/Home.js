@@ -1,4 +1,3 @@
-// Home.js
 import React, { useEffect, useState } from "react";
 import MovieGrid from "../components/MovieGrid";
 import SearchBar from "../components/SearchBar";
@@ -12,7 +11,6 @@ export default function Home({ onPosterClick }) {
 
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
-  // const [games, setGames] = useState([]); // future RAWG support
 
   const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
@@ -30,11 +28,8 @@ export default function Home({ onPosterClick }) {
     ]);
     setMovies(movieResults.slice(0, 10));
     setSeries(seriesResults.slice(0, 10));
-    // setGames([]); // For future RAWG setup
     setLoading(false);
   };
-
-  useEffect(() => { fetchTop(); }, []);
 
   const handleSearch = async (query) => {
     if (!query) return;
@@ -49,6 +44,29 @@ export default function Home({ onPosterClick }) {
     setLoading(false);
   };
 
+  const handlePosterClick = async (item) => {
+    const mediaType = item.media_type || type;
+    const url = `https://api.themoviedb.org/3/${mediaType}/${item.id}?api_key=${TMDB_API_KEY}&language=en-US`;
+    const res = await fetch(url);
+    const details = await res.json();
+    onPosterClick(details);
+  };
+
+  useEffect(() => {
+    fetchTop();
+  }, []);
+
+  // 👇 Home button reset trigger
+  useEffect(() => {
+    const listener = () => {
+      fetchTop();
+      setResults([]);
+      setHasSearched(false);
+    };
+    document.addEventListener('reset-home', listener);
+    return () => document.removeEventListener('reset-home', listener);
+  }, []);
+
   return (
     <main className="home">
       <SearchBar onSearch={handleSearch} type={type} setType={setType} />
@@ -60,21 +78,21 @@ export default function Home({ onPosterClick }) {
       {results.length > 0 ? (
         <>
           <h2>🎯 Search Results</h2>
-          <MovieGrid items={results} isSkeleton={loading} onPosterClick={onPosterClick} />
+          <MovieGrid items={results} isSkeleton={loading} onPosterClick={handlePosterClick} />
         </>
       ) : (
         <>
           <h2>🎬 Featured Movies</h2>
-          <MovieGrid items={movies} isSkeleton={loading} onPosterClick={onPosterClick} />
+          <MovieGrid items={movies} isSkeleton={loading} onPosterClick={handlePosterClick} />
           <h2>📺 Featured TV Shows</h2>
-          <MovieGrid items={series} isSkeleton={loading} onPosterClick={onPosterClick} />
-          {/* <h2>🎮 Featured Games</h2>
-          <MovieGrid items={games} isSkeleton={loading} onPosterClick={onPosterClick} /> */}
+          <MovieGrid items={series} isSkeleton={loading} onPosterClick={handlePosterClick} />
         </>
       )}
     </main>
   );
 }
+
+
 
 
 
