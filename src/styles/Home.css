@@ -1,0 +1,40 @@
+/* styles/Home.css */
+
+/* Aligns the search bar to the right */
+.search-align {
+  display: flex;
+  justify-content: flex-end;
+  margin: 30px auto 30px;
+  padding: 0 20px;
+  max-width: 1200px;
+}
+
+/* Section Headings */
+.home h2 {
+  color: var(--accent);
+  font-size: 1.8rem;
+  margin: 60px 20px 25px; /* Top and bottom margin spacing */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Spacing for the first section (Featured Movies) */
+.home .section-movies {
+  margin-top: 30px;
+}
+
+/* Movie/TV/Game Poster Grid Spacing */
+.movie-grid {
+  padding: 0 20px;
+  margin-bottom: 60px; /* Increased bottom margin for better separation */
+}
+
+/* Adjust spacing between result modal message and content */
+.no-results {
+  margin: 40px auto;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+

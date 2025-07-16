@@ -1,0 +1,55 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 1;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  color: var(--text);
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+}
+
+.modal-content img {
+  max-width: 200px;
+  float: left;
+  margin-right: 20px;
+  border-radius: 5px;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: var(--accent);
+}
+
+.modal-content p {
+  margin: 10px 0;
+}
+
+.close-btn {
+  display: block;
+  margin: 25px auto 0;
+  background: var(--button-bg);
+  color: #000;
+  font-size: 1rem;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background: var(--btn-hover);
+}
+
+
+

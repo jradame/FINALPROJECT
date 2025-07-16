@@ -1,22 +1,23 @@
-// src/components/Header.js
-import React from 'react';
-import '../App.css';  
+import React from "react";
+import "../styles/Header.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilm } from '@fortawesome/free-solid-svg-icons';
 
-const Header = ({ onHome, onAbout, onContact }) => (
-  <header className="main-header">
-    <nav className="navbar">
-      <div className="logo">🎬 CineScope</div>
-      <ul className="nav-links">
-        <li><button onClick={onHome}>Home</button></li>
-        <li><button onClick={onAbout}>About</button></li>
-        <li><button onClick={onContact}>Contact</button></li>
-      </ul>
-    </nav>
-  </header>
-);
-
-export default Header;
-
+export default function Header({ onOpenAbout, onOpenContact }) {
+  return (
+    <header className="header">
+      <div className="logo-section">
+        <FontAwesomeIcon icon={faFilm} className="logo-icon" />
+        <span className="logo-text">CineScope</span>
+      </div>
+      <nav className="nav-links">
+        <button onClick={() => window.scrollTo(0, 0)}>Home</button>
+        <button onClick={onOpenAbout}>About</button>
+        <button onClick={onOpenContact}>Contact</button>
+      </nav>
+    </header>
+  );
+}
 
 
 

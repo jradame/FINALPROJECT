@@ -1,0 +1,46 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg);
+  padding: 20px 32px;
+  border-bottom: 1px solid #222;
+  color: var(--text);
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.logo-text {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 22px;
+}
+
+.nav-links button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.nav-links button:hover {
+  color: var(--accent);
+}
+
