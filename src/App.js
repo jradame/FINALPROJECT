@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Modal from './components/Modal';
 import Home from './pages/Home';
-
 import './styles/App.css';
 
 function App() {
@@ -13,10 +12,7 @@ function App() {
 
   return (
     <>
-      <Header
-        onAbout={() => openModal('about')}
-        onContact={() => openModal('contact')}
-      />
+      <Header onAbout={() => openModal('about')} onContact={() => openModal('contact')} />
       <Home onPosterClick={movie => openModal('details', movie)} />
 
       <Modal
@@ -30,6 +26,4 @@ function App() {
 }
 
 export default App;
-
-
 

@@ -1,3 +1,4 @@
+// Home.js
 import React, { useEffect, useState } from "react";
 import MovieGrid from "../components/MovieGrid";
 import SearchBar from "../components/SearchBar";
@@ -8,76 +9,49 @@ export default function Home({ onPosterClick }) {
   const [type, setType] = useState("movie");
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
-  const [games, setGames] = useState([]);
+  // const [games, setGames] = useState([]); // future RAWG support
 
-  const API_KEY = process.env.REACT_APP_OMDB_API_KEY;
+  const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+
+  const fetchTMDB = async (endpoint) => {
+    const res = await fetch(`https://api.themoviedb.org/3/${endpoint}?api_key=${TMDB_API_KEY}`);
+    const data = await res.json();
+    return data.results || [];
+  };
 
   const fetchTop = async () => {
     setLoading(true);
-    const tops = {
-      movie: ["Oppenheimer", "Barbie", "Dune", "John Wick", "Avatar"],
-      series: ["The Boys", "Loki", "Stranger Things", "Breaking Bad", "Wednesday"],
-      game: ["Halo", "Zelda", "Final Fantasy", "GTA V", "Cyberpunk"]
-    };
-
-    const fetchOne = async (title, t) => {
-      const res = await fetch(
-        `https://www.omdbapi.com/?apikey=${API_KEY}&t=${encodeURIComponent(title)}&type=${t}&plot=full`
-      );
-      const json = await res.json();
-      return json.Response === "True" ? json : null;
-    };
-
-    const all = await Promise.all([
-      ...tops.movie.map((t) => fetchOne(t, "movie")),
-      ...tops.series.map((t) => fetchOne(t, "series")),
-      ...tops.game.map((t) => fetchOne(t, "game"))
+    const [movieResults, seriesResults] = await Promise.all([
+      fetchTMDB("movie/popular"),
+      fetchTMDB("tv/popular"),
     ]);
-
-    setMovies(all.slice(0, 5));
-    setSeries(all.slice(5, 10));
-    setGames(all.slice(10, 15));
+    setMovies(movieResults.slice(0, 10));
+    setSeries(seriesResults.slice(0, 10));
+    // setGames([]); // For future RAWG setup
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchTop();
-  }, []);
+  useEffect(() => { fetchTop(); }, []);
 
-  const handleSearch = async (q) => {
+  const handleSearch = async (query) => {
+    if (!query) return;
     setLoading(true);
     setHasSearched(true);
-
+    const endpoint = type === "movie" ? "search/movie" : "search/tv";
     const res = await fetch(
-      `https://www.omdbapi.com/?apikey=${API_KEY}&s=${encodeURIComponent(q)}&type=${type}`
+      `https://api.themoviedb.org/3/${endpoint}?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`
     );
-    const json = await res.json();
-    if (json.Response === "True") {
-      const details = await Promise.all(
-        json.Search.slice(0, 5).map((item) =>
-          fetch(
-            `https://www.omdbapi.com/?apikey=${API_KEY}&i=${item.imdbID}&plot=short`
-          ).then((r) => r.json())
-        )
-      );
-      setResults(details.filter((item) => item.Response === "True"));
-    } else {
-      setResults([]);
-    }
+    const data = await res.json();
+    setResults(data.results || []);
     setLoading(false);
   };
 
   return (
     <main className="home">
-      <div className="search-align">
-        <SearchBar
-          onSearch={handleSearch}
-          type={type}
-          setType={setType}
-        />
-      </div>
+      <SearchBar onSearch={handleSearch} type={type} setType={setType} />
 
       {hasSearched && !loading && results.length === 0 && (
         <p className="no-results">No results found. Try a different title.</p>
@@ -90,22 +64,18 @@ export default function Home({ onPosterClick }) {
         </>
       ) : (
         <>
-          <section className="section-movies">
-            <h2>🎬 Featured Movies</h2>
-            <MovieGrid items={movies} isSkeleton={loading} onPosterClick={onPosterClick} />
-          </section>
-          <section>
-            <h2>📺 Featured TV Shows</h2>
-            <MovieGrid items={series} isSkeleton={loading} onPosterClick={onPosterClick} />
-          </section>
-          <section>
-            <h2>🎮 Featured Games</h2>
-            <MovieGrid items={games} isSkeleton={loading} onPosterClick={onPosterClick} />
-          </section>
+          <h2>🎬 Featured Movies</h2>
+          <MovieGrid items={movies} isSkeleton={loading} onPosterClick={onPosterClick} />
+          <h2>📺 Featured TV Shows</h2>
+          <MovieGrid items={series} isSkeleton={loading} onPosterClick={onPosterClick} />
+          {/* <h2>🎮 Featured Games</h2>
+          <MovieGrid items={games} isSkeleton={loading} onPosterClick={onPosterClick} /> */}
         </>
       )}
     </main>
   );
 }
+
+
 
 

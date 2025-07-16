@@ -3,7 +3,7 @@ import "../styles/Header.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilm } from '@fortawesome/free-solid-svg-icons';
 
-export default function Header({ onOpenAbout, onOpenContact }) {
+export default function Header({ onAbout, onContact }) {
   return (
     <header className="header">
       <div className="logo-section">
@@ -12,8 +12,8 @@ export default function Header({ onOpenAbout, onOpenContact }) {
       </div>
       <nav className="nav-links">
         <button onClick={() => window.scrollTo(0, 0)}>Home</button>
-        <button onClick={onOpenAbout}>About</button>
-        <button onClick={onOpenContact}>Contact</button>
+        <button onClick={onAbout}>About</button>
+        <button onClick={onContact}>Contact</button>
       </nav>
     </header>
   );
