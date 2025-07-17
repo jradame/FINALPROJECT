@@ -13,11 +13,11 @@ function App() {
   const closeModal = () =>
     setModal({ isOpen: false, type: '', content: null });
 
-  const handleHomeClick = () => {
-    window.scrollTo(0, 0);
-    closeModal();
-    document.dispatchEvent(new CustomEvent('reset-home'));
-  };
+ const handleHomeClick = () => {
+  window.scrollTo(0, 0);
+  setModal({ isOpen: false, type: '', content: null });
+};
+
 
   return (
     <>

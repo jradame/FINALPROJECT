@@ -8,26 +8,25 @@ export default function Home({ onPosterClick }) {
   const [type, setType] = useState("movie");
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
 
-  const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+  const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
   const fetchTMDB = async (endpoint) => {
-    const res = await fetch(`https://api.themoviedb.org/3/${endpoint}?api_key=${TMDB_API_KEY}`);
+    const res = await fetch(`https://api.themoviedb.org/3/${endpoint}?api_key=${API_KEY}`);
     const data = await res.json();
     return data.results || [];
   };
 
   const fetchTop = async () => {
     setLoading(true);
-    const [movieResults, seriesResults] = await Promise.all([
+    const [movieResults, tvResults] = await Promise.all([
       fetchTMDB("movie/popular"),
       fetchTMDB("tv/popular"),
     ]);
-    setMovies(movieResults.slice(0, 10));
-    setSeries(seriesResults.slice(0, 10));
+    setMovies(movieResults.slice(0, 10).map(item => ({ ...item, media_type: "movie" })));
+    setSeries(tvResults.slice(0, 10).map(item => ({ ...item, media_type: "tv" })));
     setLoading(false);
   };
 
@@ -37,16 +36,16 @@ export default function Home({ onPosterClick }) {
     setHasSearched(true);
     const endpoint = type === "movie" ? "search/movie" : "search/tv";
     const res = await fetch(
-      `https://api.themoviedb.org/3/${endpoint}?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`
+      `https://api.themoviedb.org/3/${endpoint}?api_key=${API_KEY}&query=${encodeURIComponent(query)}`
     );
     const data = await res.json();
-    setResults(data.results || []);
+    setResults((data.results || []).map(item => ({ ...item, media_type: type })));
     setLoading(false);
   };
 
   const handlePosterClick = async (item) => {
-    const mediaType = item.media_type || type;
-    const url = `https://api.themoviedb.org/3/${mediaType}/${item.id}?api_key=${TMDB_API_KEY}&language=en-US`;
+    const mediaType = item.media_type;
+    const url = `https://api.themoviedb.org/3/${mediaType}/${item.id}?api_key=${API_KEY}&language=en-US`;
     const res = await fetch(url);
     const details = await res.json();
     onPosterClick(details);
@@ -56,15 +55,16 @@ export default function Home({ onPosterClick }) {
     fetchTop();
   }, []);
 
-  // 👇 Home button reset trigger
   useEffect(() => {
-    const listener = () => {
-      fetchTop();
-      setResults([]);
-      setHasSearched(false);
-    };
-    document.addEventListener('reset-home', listener);
-    return () => document.removeEventListener('reset-home', listener);
+    const homeBtn = document.getElementById("homeBtn");
+    if (homeBtn) {
+      homeBtn.onclick = (e) => {
+        e.preventDefault();
+        fetchTop();
+        setResults([]);
+        setHasSearched(false);
+      };
+    }
   }, []);
 
   return (
@@ -78,19 +78,32 @@ export default function Home({ onPosterClick }) {
       {results.length > 0 ? (
         <>
           <h2>🎯 Search Results</h2>
-          <MovieGrid items={results} isSkeleton={loading} onPosterClick={handlePosterClick} />
+          <MovieGrid
+            items={results}
+            isSkeleton={loading}
+            onPosterClick={handlePosterClick}
+          />
         </>
       ) : (
         <>
           <h2>🎬 Featured Movies</h2>
-          <MovieGrid items={movies} isSkeleton={loading} onPosterClick={handlePosterClick} />
+          <MovieGrid
+            items={movies}
+            isSkeleton={loading}
+            onPosterClick={handlePosterClick}
+          />
           <h2>📺 Featured TV Shows</h2>
-          <MovieGrid items={series} isSkeleton={loading} onPosterClick={handlePosterClick} />
+          <MovieGrid
+            items={series}
+            isSkeleton={loading}
+            onPosterClick={handlePosterClick}
+          />
         </>
       )}
     </main>
   );
 }
+
 
 
 
