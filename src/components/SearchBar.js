@@ -1,41 +1,30 @@
 import React, { useState } from 'react';
-import '../styles/SearchBar.css';
+import '../styles/Home.css';
 
-const SearchBar = ({ onSearch, type, setType, filter, setFilter }) => {
+export default function SearchBar({ onSearch, type, setType }) {
   const [query, setQuery] = useState('');
 
-  const handleSubmit = (e) => {
+  const submit = (e) => {
     e.preventDefault();
-    onSearch(query);
+    onSearch(query.trim());
   };
 
   return (
-    <form className="search-wrapper" onSubmit={handleSubmit}>
+    <form className="search-container" onSubmit={submit}>
       <input
-        id="searchInput"
-        type="text"
+        className="search-input"
         placeholder="Search title..."
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={e => setQuery(e.target.value)}
       />
-      <select id="typeSelect" value={type} onChange={(e) => setType(e.target.value)}>
+      <select className="search-select" value={type} onChange={e => setType(e.target.value)}>
         <option value="movie">Movie</option>
-        <option value="series">TV Series</option>
-        <option value="game">Game</option>
+        <option value="tv">TV Show</option>
       </select>
-      <select id="filterSelect" value={filter} onChange={(e) => setFilter(e.target.value)}>
-        <option value="">All Years/Genres</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="Action">Action</option>
-        <option value="Comedy">Comedy</option>
-        <option value="Drama">Drama</option>
-      </select>
-      <button type="submit">Search</button>
+      <button className="search-button" type="submit">Search</button>
     </form>
   );
-};
+}
 
-export default SearchBar;
 
 

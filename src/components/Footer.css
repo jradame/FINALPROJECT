@@ -1,0 +1,45 @@
+/* ============================
+   Footer Styling
+============================ */
+
+.footer {
+  background: var(--bg);
+  color: var(--text);
+  border-top: 1.5px solid var(--accent);
+  padding: 24px 0 12px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 24px;
+  font-size: 1.5rem;
+  justify-content: center;
+}
+
+.social-icons i {
+  color: #888a98;
+  opacity: 0.7;
+  cursor: default;
+  pointer-events: none;
+  transition: none;
+}
+
+.footer-text {
+  font-size: 0.95rem;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+

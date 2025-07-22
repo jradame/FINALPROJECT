@@ -1,57 +1,79 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
-import Modal from './components/Modal';
 import Home from './pages/Home';
-import './styles/App.css';
+import Modal from './components/Modal';
+import Footer from './components/Footer';
 
+// ============================
+// App Component
+// ============================
 function App() {
-  const [modal, setModal] = useState({ isOpen: false, type: '', content: null });
-  const homeRef = useRef(null);
-  const [resetFlag, setResetFlag] = useState(false); // for triggering reset
+  const [modal, setModal] = useState({ open: false, type: '', content: null });
+  const [searchResults, setSearchResults] = useState([]);
+  const [searching, setSearching] = useState(false);
+  const [type, setType] = useState('movie');
+
+  const handleSearch = async (query) => {
+    if (!query) return;
+    setSearching(true);
+    const endpoint = type === 'movie' ? 'movie' : 'tv';
+    const TMDB_KEY = process.env.REACT_APP_TMDB_API_KEY;
+    const res = await fetch(
+      `https://api.themoviedb.org/3/search/${endpoint}?api_key=${TMDB_KEY}&query=${encodeURIComponent(query)}`
+    );
+    const data = await res.json();
+    setSearchResults(data.results.slice(0, 6));
+    setSearching(false);
+  };
+
+  const goHome = () => {
+    setSearchResults([]);
+    setSearching(false);
+    closeModal();
+    window.scrollTo(0, 0);
+  };
 
   const openModal = (type, content = null) =>
-    setModal({ isOpen: true, type, content });
-
+    setModal({ open: true, type, content });
   const closeModal = () =>
-    setModal({ isOpen: false, type: '', content: null });
-
-  const handleHomeClick = () => {
-    setResetFlag(true); // tells Home to reset
-    if (homeRef.current?.scrollIntoView) {
-      homeRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-    closeModal();
-  };
-
-  const handleResetComplete = () => {
-    setResetFlag(false); // Home finished resetting
-  };
+    setModal({ open: false, type: '', content: null });
 
   return (
     <>
       <Header
-        onHome={handleHomeClick}
+        onHome={goHome}
         onAbout={() => openModal('about')}
         onContact={() => openModal('contact')}
       />
-      <div ref={homeRef}>
-        <Home
-          onPosterClick={(movie) => openModal('details', movie)}
-          reset={resetFlag}
-          onResetComplete={handleResetComplete}
-        />
-      </div>
+      <Home
+        onPosterClick={(item) => openModal('details', item)}
+        onSearch={handleSearch}
+        type={type}
+        setType={setType}
+        searchResults={searchResults}
+        searching={searching}
+      />
       <Modal
-        isOpen={modal.isOpen}
+        isOpen={modal.open}
         type={modal.type}
         content={modal.content}
         onClose={closeModal}
       />
+      <Footer />
     </>
   );
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,72 +1,96 @@
-import React from 'react';
-import '../styles/Modal.css';
+import React, { useState } from 'react';
+import './Modal.css';
 
+// ============================
+// Modal Component
+// ============================
 export default function Modal({ isOpen, type, content, onClose }) {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+
   if (!isOpen) return null;
 
-  const closeOnBackdrop = e => {
-    if (e.target === e.currentTarget) onClose();
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const {
-    title, name, vote_average, runtime,
-    episode_run_time, overview, release_date, first_air_date, poster_path
-  } = content || {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
 
-  const displayTitle = title || name || '';
-  const displayRating = vote_average ? `${vote_average.toFixed(1)}/10` : 'N/A';
-  const displayRuntime = runtime || (episode_run_time?.[0] || 'N/A');
-  const displayDate = release_date || first_air_date || 'N/A';
-  const posterUrl = poster_path ? `https://image.tmdb.org/t/p/w300${poster_path}` : null;
+    // Placeholder: replace with email API, backend, etc
+    console.log('Contact Form Submitted:', formData);
+
+    // Clear form if needed
+    setFormData({ name: '', email: '', message: '' });
+    setTimeout(() => setSubmitted(false), 3000);
+  };
 
   return (
-    <div className='modal-backdrop in' onClick={closeOnBackdrop}>
-      <div className='modal-content'>
-        <button className='close-btn' onClick={onClose}>×</button>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose} aria-label="Close">&times;</button>
 
         {type === 'about' && (
           <>
             <h2>About CineScope</h2>
             <p>
-              CineScope is your all-in-one gateway to movies, TV shows, and more. 
-              Built with React and TMDB, it's fast, beautiful, and open for expansion.
+              CineScope is your portal for discovering movies and series.<br />
+              Built with React and the latest movie APIs.<br /><br />
+              Enjoy browsing and happy watching!
             </p>
           </>
         )}
 
         {type === 'contact' && (
-          <form className="contact-form" onSubmit={e => { e.preventDefault(); onClose(); alert('Thanks for reaching out!'); }}>
+          <>
             <h2>Contact Us</h2>
-            <label>
-              <span>Name</span>
-              <input type="text" required />
-            </label>
-            <label>
-              <span>Email</span>
-              <input type="email" required />
-            </label>
-            <label>
-              <span>Message</span>
-              <textarea rows="4" required />
-            </label>
-            <button type="submit" className="submit-btn">Send</button>
-          </form>
+            {submitted ? (
+              <p className="form-success">Thanks for reaching out! We'll get back to you soon. 🎉</p>
+            ) : (
+              <form className="contact-form" onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+                <textarea
+                  name="message"
+                  placeholder="Your Message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                ></textarea>
+                <button type="submit">Send Message</button>
+              </form>
+            )}
+          </>
         )}
 
         {type === 'details' && content && (
           <>
-            {posterUrl && <img src={posterUrl} alt={displayTitle} />}
-            <h2>{displayTitle}</h2>
-            <p><strong>⭐ Rating:</strong> {displayRating}</p>
-            <p><strong>⏱ Runtime:</strong> {displayRuntime} min</p>
-            <p><strong>📅 Released:</strong> {displayDate}</p>
-            <p>{overview || 'No description available.'}</p>
+            <h2>{content.title || content.name}</h2>
+            <p>{content.overview || 'No overview available.'}</p>
           </>
         )}
       </div>
     </div>
   );
 }
+
+
+
 
 
 

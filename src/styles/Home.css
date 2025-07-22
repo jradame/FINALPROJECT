@@ -1,40 +1,175 @@
-/* styles/Home.css */
+/* ============================
+   Home Content Layout
+============================ */
 
-/* Aligns the search bar to the right */
-.search-align {
+.home-content {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ============================
+   Search Bar
+============================ */
+
+.search-container {
   display: flex;
   justify-content: flex-end;
-  margin: 30px auto 30px;
-  padding: 0 20px;
-  max-width: 1200px;
+  width: 100%;
+  margin-bottom: 20px;
+  gap: 12px;
 }
 
-/* Section Headings */
-.home h2 {
-  color: var(--accent);
-  font-size: 1.8rem;
-  margin: 60px 20px 25px; /* Top and bottom margin spacing */
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Spacing for the first section (Featured Movies) */
-.home .section-movies {
-  margin-top: 30px;
-}
-
-/* Movie/TV/Game Poster Grid Spacing */
-.movie-grid {
-  padding: 0 20px;
-  margin-bottom: 60px; /* Increased bottom margin for better separation */
-}
-
-/* Adjust spacing between result modal message and content */
-.no-results {
-  margin: 40px auto;
-  text-align: center;
-  font-size: 1.2rem;
+.search-input,
+.search-select {
+  background: var(--card-bg);
   color: var(--text);
+  border: 1px solid #444;
+  padding: 8px;
+  border-radius: 4px;
 }
+
+.search-button {
+  background: var(--button-bg);
+  border: none;
+  padding: 8px 16px;
+  color: #000;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.search-button:hover {
+  background: var(--btn-hover);
+}
+
+/* ============================
+   Headings
+============================ */
+
+h2 {
+  color: var(--accent);
+  margin: 40px 0 20px 0;
+  width: 100%;
+  text-align: left;
+  padding-left: 10px;
+}
+
+/* ============================
+   Result Grid
+============================ */
+
+.result-grid {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(6, 1fr);
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .result-grid {
+    max-width: 540px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .result-grid {
+    max-width: 360px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ============================
+   Search Row Container
+============================ */
+
+.search-row {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+
+
+
+
+
+
+.search-input,
+.search-select {
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid #444;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.search-button {
+  background: var(--button-bg);
+  border: none;
+  padding: 8px 16px;
+  color: #000;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.search-button:hover {
+  background: var(--btn-hover);
+}
+
+/* Headings */
+h2 {
+  color: var(--accent);
+  margin: 40px 0 20px 0;
+  width: 100%;
+  text-align: left;            /* Keep heading aligned left */
+  padding-left: 10px;          /* Align with grids if needed */
+}
+
+/* Movie and TV grids container */
+.result-grid {
+  width: 100%;
+  max-width: 1080px;         /* 6 cards × 180px per card = 1080px */
+  margin: 0 auto;            /* center grid container horizontally */
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(6, 1fr);
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .result-grid {
+    max-width: 540px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .result-grid {
+    max-width: 360px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Right-align the search bar in the main content area */
+.search-row {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+
+
+
 
